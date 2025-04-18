@@ -29,7 +29,7 @@ return (
 
                         <div>
                             <h4 className="text-xl font-semibold mb-2">Hours</h4>
-                            <p>Monday - Friday: 9AM - 6PM</p>
+                            <p>Monday - Friday: 9AM - 9PM</p>
                             <p>Saturday: 10AM - 4PM</p>
                             <p>Sunday: Closed</p>
                         </div>
