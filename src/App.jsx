@@ -15,6 +15,7 @@ import Login from "./Login.jsx";
 import Register from "./Register.jsx";
 import Aiplanner from "./Aiplanner.jsx";
 import Destinations from "./Destinations.jsx";
+import Exp from "../Exp.jsx";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/destination/:destination" element={<Destinations />} />
+                <Route path="/exp/:search" element={<Exp />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/transports" element={<TransportList />} />
                 <Route path="/booking" element={<BookingDetails />} />
