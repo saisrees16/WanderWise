@@ -13,6 +13,8 @@ import Preferences from "./Preferences.jsx";
 import SeatSelection from "./SeatsSelection.jsx";
 import Login from "./Login.jsx";
 import Register from "./Register.jsx";
+import Aiplanner from "./Aiplanner.jsx";
+import Destinations from "./Destinations.jsx";
 
 function App() {
     return (
@@ -23,6 +25,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/destination/:destination" element={<Destinations />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/transports" element={<TransportList />} />
                 <Route path="/booking" element={<BookingDetails />} />
@@ -31,6 +34,7 @@ function App() {
                 <Route path="/seatselection" element={<SeatSelection />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/Aiplanner" element={<Aiplanner />} />
 
             </Routes>
                 </UserProvider>

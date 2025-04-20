@@ -47,6 +47,13 @@ const TransportList = () => {
         return acc;
     }, {});
 
+    // Find lowest price in each transport type group
+    const lowestPriceByType = {};
+    Object.entries(groupedTransports).forEach(([type, transportList]) => {
+        const lowestPrice = Math.min(...transportList.map(t => t.price));
+        lowestPriceByType[type] = lowestPrice;
+    });
+
     // Navigate to booking page
     const handleBooking = (transport) => {
         navigate("/seatselection", {
@@ -113,7 +120,7 @@ const TransportList = () => {
                     {/* Date Display */}
                     <p className="mt-4 text-center text-gray-600">
                         <span className="font-medium">Travel Date:</span> {formattedDate}
-                    </p>    
+                    </p>
                 </div>
 
                 {/* Transport List */}
@@ -127,13 +134,22 @@ const TransportList = () => {
                                 <div className="space-y-4">
                                     {transportList.map((transport) => {
                                         const availStatus = getAvailabilityStatus(transport.availability);
+                                        const isLowestPrice = transport.price === lowestPriceByType[type];
 
                                         return (
                                             <div
                                                 key={transport.id}
-                                                className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-4 border-l-4 border-orange-400"
+                                                className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-4 border-l-4 border-orange-400 relative"
                                                 onClick={() => handleBooking(transport)}
                                             >
+                                                {isLowestPrice && (
+                                                    <div className="absolute -top-3 -left-3 bg-blue-600 text-white px-3 py-1 rounded-full shadow-md text-xs font-bold flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                                        </svg>
+                                                        AI Recommandation
+                                                    </div>
+                                                )}
                                                 <div className="flex flex-col md:flex-row justify-between">
                                                     <div className="mb-4 md:mb-0">
                                                         <h3 className="text-xl font-bold text-gray-800 mb-2">{transport.name}</h3>
@@ -146,7 +162,9 @@ const TransportList = () => {
                                                             </div>
                                                             <div className="col-span-2">
                                                                 <span className="font-medium text-orange-500">Price:</span>
-                                                                <span className="text-lg font-bold ml-2">₹{transport.price}</span>
+                                                                <span className={`text-lg font-bold ml-2 ${isLowestPrice ? "text-blue-600" : ""}`}>
+                                                                    ₹{transport.price}
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
