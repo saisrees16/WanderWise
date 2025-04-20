@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // Store API key in a variable - in a real app, you should use environment variables
 // through a proper build system rather than hardcoding
-const API_KEY = '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';
+const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
 const Destinations = () => {
     const { destination } = useParams();
@@ -127,7 +127,7 @@ const Destinations = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 mt-15">
             <div className="max-w-6xl mx-auto p-6 md:p-8">
                 <h1 className="text-4xl md:text-5xl font-bold text-blue-700 mb-6 md:mb-10 text-center md:text-left">
                     ✈️ Discover <span className="capitalize bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{destination}</span>
@@ -213,7 +213,7 @@ const Destinations = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
                         </svg>
-                        Back to Search
+                        Back to Home
                     </button>
                 </div>
             </div>

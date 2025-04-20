@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Nav from "./Nav.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
 import Navbar from "./Navbar.jsx";
 import Home from "./Home.jsx";
@@ -15,6 +14,8 @@ import Login from "./Login.jsx";
 import Register from "./Register.jsx";
 import Aiplanner from "./Aiplanner.jsx";
 import Destinations from "./Destinations.jsx";
+import IndiaDestinationsPage from "./IndiaDestinationsPage.jsx";
+import Book from "./Book.jsx";
 
 function App() {
     return (
@@ -35,6 +36,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/Aiplanner" element={<Aiplanner />} />
+                <Route path="/destinations" element={<IndiaDestinationsPage />} />
+                <Route path="/book" element={<Book />} />
 
             </Routes>
                 </UserProvider>

@@ -56,7 +56,8 @@ const TransportList = () => {
 
     // Navigate to booking page
     const handleBooking = (transport) => {
-        navigate("/seatselection", {
+        const path = transport.type.toLowerCase() === "bus" ? "/seatselection" : "/book";
+        navigate(path, {
             state: {
                 transport,
                 fromCity,
@@ -65,6 +66,7 @@ const TransportList = () => {
             }
         });
     };
+
 
     // Function to get availability status
     const getAvailabilityStatus = (availability) => {

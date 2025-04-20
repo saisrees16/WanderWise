@@ -9,7 +9,7 @@ const goa = 'https://images.pexels.com/photos/4428289/pexels-photo-4428289.jpeg?
 const tamil = 'https://images.pexels.com/photos/12308295/pexels-photo-12308295.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';
 const maha = 'https://images.pexels.com/photos/31615400/pexels-photo-31615400/free-photo-of-charming-mumbai-street-with-classic-architecture.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';
 const adv = 'https://images.pexels.com/photos/307008/pexels-photo-307008.jpeg?auto=compress&cs=tinysrgb&w=6000';
-const well = '/api/placeholder/400/300';
+const well = 'https://images.pexels.com/photos/268134/pexels-photo-268134.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';
 const cul = 'https://images.pexels.com/photos/1313814/pexels-photo-1313814.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';
 
 // Sample testimonials data
