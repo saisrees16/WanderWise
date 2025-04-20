@@ -64,7 +64,7 @@ const Places = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    model: "deepseek/deepseek-r1-zero:free",
+                    model: "shisa-ai/shisa-v2-llama3.3-70b:free",
                     messages: [
                         {
                             role: "user",
