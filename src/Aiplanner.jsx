@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, MapPin, Clock, Loader, Download, Share2, AlertCircle } from 'lucide-react';
 
 export default function TravelPlanner() {
-    const API_KEY = "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";
+    const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
     const [formData, setFormData] = useState({
         destination: '',
         startDate: '',

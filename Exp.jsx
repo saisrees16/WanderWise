@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // Store API key in a variable - in a real app, you should use environment variables
 // through a proper build system rather than hardcoding
-const API_KEY = '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';
+const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
 const Places = () => {
     const { search } = useParams();
@@ -520,13 +520,7 @@ const Places = () => {
                         Back
                     </button>
 
-                    <button
-                        onClick={() => navigate('/')}
-                        className="py-3 px-6 bg-white border border-orange-200 text-orange-600 hover:bg-orange-50 rounded-lg shadow transition duration-200 flex items-center"
-                    >
-                        <i className="fas fa-search mr-2"></i>
-                        New Search
-                    </button>
+
                 </div>
             </div>
 

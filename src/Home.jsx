@@ -287,22 +287,16 @@ const Home = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4">
                             <button
                                 onClick={handleFindAdventures}
-                                className="bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold text-lg py-4 rounded-xl transition-colors flex items-center justify-center shadow-md hover:shadow-lg"
+                                className="bg-purple-500 hover:bg-purple-600 active:bg-purple-700 text-white font-semibold text-lg py-4 mx-30 rounded-xl transition-colors flex items-center justify-center shadow-md hover:shadow-lg"
                             >
                                 <Search className="w-5 h-5 mr-2" />
                                 Book Tickets
                             </button>
 
-                            <button
-                                onClick={handleGetPersonalPlan}
-                                className="bg-purple-500 hover:bg-purple-600 active:bg-purple-700 text-white font-semibold text-lg py-4 rounded-xl transition-colors flex items-center justify-center shadow-md hover:shadow-lg"
-                            >
-                                <Calendar className="w-5 h-5 mr-2" />
-                                Get Personal Plan
-                            </button>
+
                         </div>
                     </motion.div>
                 </div>
