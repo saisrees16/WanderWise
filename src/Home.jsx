@@ -295,6 +295,14 @@ const Home = () => {
                                 <Search className="w-5 h-5 mr-2" />
                                 Book Tickets
                             </button>
+
+                            <button
+                                onClick={handleGetPersonalPlan}
+                                className="bg-purple-500 hover:bg-purple-600 active:bg-purple-700 text-white font-semibold text-lg py-4 rounded-xl transition-colors flex items-center justify-center shadow-md hover:shadow-lg"
+                            >
+                                <Calendar className="w-5 h-5 mr-2" />
+                                Get Personal Plan
+                            </button>
                         </div>
                     </motion.div>
                 </div>
@@ -421,7 +429,7 @@ const Home = () => {
                                 <div className="p-6">
                                     <h3 className="text-2xl font-bold text-gray-800 mb-3">{exp.title}</h3>
                                     <p className="text-gray-600 mb-6">{exp.description}</p>
-                                    <Link to={`/experience/${exp.title.toLowerCase().replace(' ', '-')}`}>
+                                    <Link to={`/exp/${exp.title.toLowerCase().replace(' ', '-')}`}>
                                         <button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-xl font-medium transition-colors inline-flex items-center">
                                             Discover More
                                             <ChevronRight className="ml-1 w-4 h-4" />

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, MapPin, Clock, Loader, Download, Share2, AlertCircle } from 'lucide-react';
 
 export default function TravelPlanner() {
-    const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+    const API_KEY = "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";
     const [formData, setFormData] = useState({
         destination: '',
         startDate: '',
@@ -158,7 +158,7 @@ export default function TravelPlanner() {
         : itinerary.filter(item => item.day === currentTab);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-200 py-12 px-4 mt-10">
+        <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-200 py-12 px-4">
             <div className="max-w-4xl mx-auto">
                 <div className="bg-white rounded-xl shadow-xl overflow-hidden">
                     {/* Header */}
