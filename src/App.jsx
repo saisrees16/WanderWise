@@ -15,6 +15,7 @@ import Destinations from "./Destinations.jsx";
 import IndiaDestinationsPage from "./IndiaDestinationsPage.jsx";
 import Book from "./Book.jsx";
 import Exp from "../Exp.jsx";
+import Plan from "./Plan.jsx";
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
                     <Route path="/destinations" element={<IndiaDestinationsPage />} />
                     <Route path="/book" element={<Book />} />
                     <Route path="/exp/:search" element={<Exp />} />
+                    <Route path="/planner/:fromCity/:toCity" element={<Plan />} />
 
                 </Routes>
             </UserProvider>

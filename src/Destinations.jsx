@@ -327,6 +327,7 @@ const Destinations = () => {
                                                 memories</p>
                                         </div>
                                         <button
+                                            onClick={() => navigate(`/planner/${destination}/${recommendations[activeTab].city}`)}
                                             className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium rounded-xl shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1 flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                                 <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />

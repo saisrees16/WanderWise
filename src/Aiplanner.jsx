@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Clock, Loader, Download, Share2, AlertCircle } from 'lucide-react';
+import { Calendar, MapPin, Clock, Loader, Download, Share2, AlertCircle, PlusCircle, X, Globe, Coffee, Sun } from 'lucide-react';
 
 export default function TravelPlanner() {
     const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
     const [formData, setFormData] = useState({
         destination: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        preferences: '',
+        avoidances: ''
     });
     const [loading, setLoading] = useState(false);
     const [itinerary, setItinerary] = useState([]);
@@ -16,6 +18,7 @@ export default function TravelPlanner() {
     const [currentTab, setCurrentTab] = useState('all');
     const [uniqueDays, setUniqueDays] = useState([]);
     const [copied, setCopied] = useState(false);
+    const [showPreferences, setShowPreferences] = useState(false);
 
     // Calculate the minimum date for end date based on start date
     useEffect(() => {
@@ -61,6 +64,15 @@ export default function TravelPlanner() {
         setCurrentTab('all');
 
         try {
+            // Construct preference string for the prompt
+            let preferencesString = '';
+            if (formData.preferences) {
+                preferencesString += `Include these preferences: ${formData.preferences}. `;
+            }
+            if (formData.avoidances) {
+                preferencesString += `Avoid these: ${formData.avoidances}. `;
+            }
+
             const response = await fetch(
                 "https://openrouter.ai/api/v1/chat/completions",
                 {
@@ -78,13 +90,15 @@ export default function TravelPlanner() {
                 Requirements:
                 - Maximum 3 activities per day
                 - Each activity description should be 3-4 words maximum
-                - Format as simple text with each line as: Day number | Time | Activity
+                - Format as simple text with each line as: Day number | Time | Activity | Category
                 - Times should be in format like "9 AM" or "2 PM"
+                - Categories should be one of: Food, Sightseeing, Nature, Culture, Adventure, Shopping, Relaxation
                 - Do not include any special characters or formatting
+                ${preferencesString}
                 Example format:
-                Day 1 | 9 AM | Visit Central Park
-                Day 1 | 2 PM | Shopping at Mall
-                Day 2 | 10 AM | Beach Swimming`,
+                Day 1 | 9 AM | Visit Central Park | Nature
+                Day 1 | 2 PM | Shopping at Mall | Shopping
+                Day 2 | 10 AM | Beach Swimming | Nature`,
                             },
                         ],
                     }),
@@ -113,15 +127,16 @@ export default function TravelPlanner() {
                         !line.includes("}")
                 );
 
-            // Parse each line into day, time, and activity
+            // Parse each line into day, time, activity, and category
             lines.forEach((line) => {
                 if (line.trim()) {
-                    const [day, time, activity] = line
-                        .split("|")
-                        .map((item) => item.trim());
-
-                    if (day && time && activity) {
-                        parsedItinerary.push({ day, time, activity });
+                    const parts = line.split("|").map((item) => item.trim());
+                    // Make sure we handle both formats (with or without category)
+                    if (parts.length >= 3) {
+                        const [day, time, activity, category = "Sightseeing"] = parts;
+                        if (day && time && activity) {
+                            parsedItinerary.push({ day, time, activity, category });
+                        }
                     }
                 }
             });
@@ -143,7 +158,7 @@ export default function TravelPlanner() {
 
     const handleCopyItinerary = () => {
         const text = itinerary
-            .map(item => `${item.day} | ${item.time} | ${item.activity}`)
+            .map(item => `${item.day} | ${item.time} | ${item.activity} | ${item.category}`)
             .join('\n');
 
         navigator.clipboard.writeText(text).then(() => {
@@ -156,6 +171,47 @@ export default function TravelPlanner() {
     const filteredItinerary = currentTab === 'all'
         ? itinerary
         : itinerary.filter(item => item.day === currentTab);
+
+    // Map category to icon and color
+    const getCategoryStyle = (category) => {
+        const defaultStyle = {
+            icon: <Globe size={14} />,
+            color: 'bg-gray-100 text-gray-700'
+        };
+
+        const styles = {
+            'Food': {
+                icon: <Coffee size={14} />,
+                color: 'bg-amber-100 text-amber-700'
+            },
+            'Sightseeing': {
+                icon: <Globe size={14} />,
+                color: 'bg-indigo-100 text-indigo-700'
+            },
+            'Nature': {
+                icon: <Sun size={14} />,
+                color: 'bg-green-100 text-green-700'
+            },
+            'Culture': {
+                icon: <Globe size={14} />,
+                color: 'bg-purple-100 text-purple-700'
+            },
+            'Adventure': {
+                icon: <Globe size={14} />,
+                color: 'bg-red-100 text-red-700'
+            },
+            'Shopping': {
+                icon: <Globe size={14} />,
+                color: 'bg-blue-100 text-blue-700'
+            },
+            'Relaxation': {
+                icon: <Globe size={14} />,
+                color: 'bg-teal-100 text-teal-700'
+            }
+        };
+
+        return styles[category] || defaultStyle;
+    };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-200 py-12 px-4">
@@ -232,6 +288,60 @@ export default function TravelPlanner() {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* Preferences Toggle Button */}
+                                <div className="flex justify-center">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPreferences(!showPreferences)}
+                                        className="text-indigo-600 flex items-center text-sm font-medium hover:text-indigo-800 transition-colors"
+                                    >
+                                        {showPreferences ? (
+                                            <>
+                                                <X size={16} className="mr-1" />
+                                                Hide Preferences
+                                            </>
+                                        ) : (
+                                            <>
+                                                <PlusCircle size={16} className="mr-1" />
+                                                Add Trip Preferences
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+
+                                {/* Preferences Section */}
+                                {showPreferences && (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fadeIn border-t border-gray-200 pt-4">
+                                        <div className="space-y-2">
+                                            <label htmlFor="preferences" className="block text-sm font-medium text-gray-700">
+                                                I would like to include:
+                                            </label>
+                                            <textarea
+                                                id="preferences"
+                                                value={formData.preferences}
+                                                onChange={handleChange}
+                                                placeholder="e.g., beaches, museums, local cuisine"
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
+                                                rows="3"
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label htmlFor="avoidances" className="block text-sm font-medium text-gray-700">
+                                                I want to avoid:
+                                            </label>
+                                            <textarea
+                                                id="avoidances"
+                                                value={formData.avoidances}
+                                                onChange={handleChange}
+                                                placeholder="e.g., temples, crowded places, hiking"
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
+                                                rows="3"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className="flex justify-center pt-2">
                                     <button
@@ -335,39 +445,42 @@ export default function TravelPlanner() {
                                         </nav>
                                     </div>
 
-                                    {/* Itinerary table */}
-                                    <div className="overflow-x-auto rounded-lg shadow">
-                                        <table className="w-full">
-                                            <thead className="bg-indigo-50">
-                                            <tr>
-                                                <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Day</th>
-                                                <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                                    <div className="flex items-center">
-                                                        <Clock size={14} className="mr-1" />
-                                                        Time
+                                    {/* Enhanced Itinerary Cards */}
+                                    <div className="space-y-6">
+                                        {filteredItinerary.length > 0 ? (
+                                            filteredItinerary.map((item, index) => {
+                                                const categoryStyle = getCategoryStyle(item.category);
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        className="rounded-lg border border-gray-200 overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow"
+                                                    >
+                                                        <div className="flex flex-col md:flex-row">
+                                                            {/* Left side with day */}
+                                                            <div className="bg-indigo-100 p-4 flex items-center justify-center md:w-32">
+                                                                <div className="text-center">
+                                                                    <p className="text-indigo-800 font-bold">{item.day}</p>
+                                                                    <p className="text-indigo-600 font-medium">{item.time}</p>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Right side with activity details */}
+                                                            <div className="flex-grow p-4 flex items-center justify-between">
+                                                                <h3 className="font-medium text-gray-800 text-lg">{item.activity}</h3>
+                                                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${categoryStyle.color}`}>
+                                                                    <span className="mr-1">{categoryStyle.icon}</span>
+                                                                    {item.category}
+                                                                </span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </th>
-                                                <th className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Activity</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-gray-200">
-                                            {filteredItinerary.length > 0 ? (
-                                                filteredItinerary.map((item, index) => (
-                                                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50 hover:bg-indigo-50 transition-colors'}>
-                                                        <td className="py-4 px-6 text-sm font-medium text-gray-800">{item.day}</td>
-                                                        <td className="py-4 px-6 text-sm text-gray-600">{item.time}</td>
-                                                        <td className="py-4 px-6 text-sm text-gray-800 font-medium">{item.activity}</td>
-                                                    </tr>
-                                                ))
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan={3} className="py-8 text-center text-gray-500">
-                                                        No activities found for this selection.
-                                                    </td>
-                                                </tr>
-                                            )}
-                                            </tbody>
-                                        </table>
+                                                );
+                                            })
+                                        ) : (
+                                            <div className="text-center py-12 text-gray-500">
+                                                No activities found for this selection.
+                                            </div>
+                                        )}
                                     </div>
 
                                     {/* Tips section */}
@@ -391,7 +504,7 @@ export default function TravelPlanner() {
                 </div>
             </div>
 
-            {/* Custom CSS for hiding scrollbar but allowing scroll */}
+            {/* Custom CSS for animations and hiding scrollbar */}
             <style jsx>{`
                 .hide-scrollbar::-webkit-scrollbar {
                     display: none;
@@ -399,6 +512,13 @@ export default function TravelPlanner() {
                 .hide-scrollbar {
                     -ms-overflow-style: none;
                     scrollbar-width: none;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fadeIn {
+                    animation: fadeIn 0.3s ease-out forwards;
                 }
             `}</style>
         </div>
